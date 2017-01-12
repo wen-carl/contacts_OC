@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "WGContactsVC.h"
 
 @interface AppDelegate ()
 
@@ -16,7 +17,12 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Override point for customization after application launch.
+    
+    WGContactsVC *contactsVC = [[WGContactsVC alloc] init];
+    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:contactsVC];
+    _window.rootViewController = nav;
+    [_window makeKeyAndVisible];
+    
     return YES;
 }
 
