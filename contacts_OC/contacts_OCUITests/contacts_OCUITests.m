@@ -1,18 +1,18 @@
 //
-//  ContactsUITests.m
-//  ContactsUITests
+//  contacts_OCUITests.m
+//  contacts_OCUITests
 //
-//  Created by Admin on 17/1/3.
+//  Created by Admin on 17/1/12.
 //  Copyright © 2017年 Wind. All rights reserved.
 //
 
 #import <XCTest/XCTest.h>
 
-@interface ContactsUITests : XCTestCase
+@interface contacts_OCUITests : XCTestCase
 
 @end
 
-@implementation ContactsUITests
+@implementation contacts_OCUITests
 
 - (void)setUp {
     [super setUp];

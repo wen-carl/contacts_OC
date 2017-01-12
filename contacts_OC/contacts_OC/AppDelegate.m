@@ -1,13 +1,12 @@
 //
 //  AppDelegate.m
-//  Contacts
+//  contacts_OC
 //
-//  Created by Admin on 17/1/3.
+//  Created by Admin on 17/1/12.
 //  Copyright © 2017年 Wind. All rights reserved.
 //
 
 #import "AppDelegate.h"
-#import "WGContactsVC.h"
 
 @interface AppDelegate ()
 
@@ -16,13 +15,8 @@
 @implementation AppDelegate
 
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-{
-    WGContactsVC *contactsVC = [[WGContactsVC alloc] init];
-    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:contactsVC];
-    _window.rootViewController = nav;
-    [_window makeKeyAndVisible];
-    
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    // Override point for customization after application launch.
     return YES;
 }
 
