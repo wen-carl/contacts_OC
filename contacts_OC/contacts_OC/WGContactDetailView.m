@@ -8,13 +8,14 @@
 
 #import "WGContactDetailView.h"
 
-@interface WGContactDetailView ()<UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate, WGHeaderViewDelegate, WGTableHeaderViewDelegate, WGTableViewCellDelegate, UITextFieldDelegate>
+@interface WGContactDetailView ()<UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate, WGHeaderViewDelegate, WGTableHeaderViewDelegate, WGTableViewCellDelegate, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource>
 {
     UITableView *_tableView;
     WGHeaderView *_headerView;
     WGTableHeaderView *tableHeader;
     UITextField *_textField;
     UIToolbar *footerView;
+    NSArray <NSDictionary *>*_cityArr;
 }
 
 @end
@@ -147,11 +148,12 @@
     }
     else
     {
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Alert" message:@"A cintact need a name at least." preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Alert" message:@"A contact need a name at least." preferredStyle:UIAlertControllerStyleAlert];
         UIAlertAction *action = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
             [alert dismissViewControllerAnimated:YES completion:nil];
         }];
         [alert addAction:action];
+        
         [(UIViewController *)_delegate presentViewController:alert animated:YES completion:^{
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 [alert dismissViewControllerAnimated:YES completion:nil];
@@ -282,7 +284,7 @@
             }
         }
         NSArray *arr = dic[@"index"];
-        cell.kindLabel.text = [arr[indexPath.row] stringByAppendingString:@" :"];
+        cell.kindTextfield.text = [arr[indexPath.row] stringByAppendingString:@" :"];
         cell.infoTextField.text = dic[arr[indexPath.row]];
     }
     else
@@ -295,7 +297,7 @@
             cell = [[WGTableViewCell alloc] initWithStyle:WGTableViewCellStyleDefalt reuseIdentifier:identifier];
         }
         cell.infoTextField.text = str;
-        cell.kindLabel.text = [array[indexPath.section] stringByAppendingString:@" :"];
+        cell.kindTextfield.text = [array[indexPath.section] stringByAppendingString:@" :"];
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.infoTextField.delegate = self;
@@ -364,6 +366,59 @@
             textField.keyboardType = UIKeyboardTypeEmailAddress;
             break;
             
+        case 2:
+        {
+            if (!_cityArr)
+            {
+                NSString *path = [[NSBundle mainBundle] pathForResource:@"address" ofType:@"plist"];
+                NSDictionary *address = [NSDictionary dictionaryWithContentsOfFile:path];
+                _cityArr = [[NSArray alloc] initWithArray:address[@"address"]];
+            }
+            
+            UIPickerView *picker = [[UIPickerView alloc] init];
+            picker.delegate = self;
+            picker.dataSource = self;
+            _textField.inputView = picker;
+            
+            UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, 40)];
+            UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
+            button.frame = CGRectMake(0, 0, 50, 30);
+            [button setTitle:@"Done" forState:UIControlStateNormal];
+            button.layer.borderColor = [UIColor blueColor].CGColor;
+            button.layer.borderWidth = 1.0;
+            button.layer.cornerRadius = 5;
+            [button addTarget:self action:@selector(onGetAddress:) forControlEvents:UIControlEventTouchUpInside];
+            
+            UIBarButtonItem *bar1 = [[UIBarButtonItem alloc] initWithCustomView:button];
+            UIBarButtonItem *bar2 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+            toolbar.items = @[bar2,bar1];
+            _textField.inputAccessoryView = toolbar;
+        }
+            break;
+            
+        case 3:
+        {
+            UIDatePicker *picker = [[UIDatePicker alloc] init];
+            picker.datePickerMode = UIDatePickerModeDate;
+            picker.maximumDate = [NSDate date];
+            _textField.inputView = picker;
+            
+            UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, 40)];
+            UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
+            button.frame = CGRectMake(0, 0, 50, 30);
+            [button setTitle:@"Done" forState:UIControlStateNormal];
+            button.layer.borderColor = [UIColor blueColor].CGColor;
+            button.layer.borderWidth = 1.0;
+            button.layer.cornerRadius = 5;
+            [button addTarget:self action:@selector(onGetDate:) forControlEvents:UIControlEventTouchUpInside];
+            
+            UIBarButtonItem *bar1 = [[UIBarButtonItem alloc] initWithCustomView:button];
+            UIBarButtonItem *bar2 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+            toolbar.items = @[bar2,bar1];
+            _textField.inputAccessoryView = toolbar;
+        }
+            break;
+            
         default:
             textField.keyboardType = UIKeyboardTypeDefault;
             break;
@@ -397,19 +452,27 @@
             case 0:
             case 1:
             {
-                if (![self validateStringValue:valueStr section:indexPath.section])
+                NSMutableDictionary *dic = indexPath.section == 0 ? _contact.phoneNum : _contact.email;
+                
+                if (textField.tag == TAG_KINDTF)
                 {
-                    textField.textColor = [UIColor redColor];
+                    [dic[@"index"] replaceObjectAtIndex:indexPath.row withObject:valueStr];
                 }
-                else
+                else if (textField.tag == TAG_INFOTF)
                 {
-                    textField.textColor = [UIColor blackColor];
+                    if (![self validateStringValue:valueStr section:indexPath.section])
+                    {
+                        textField.textColor = [UIColor redColor];
+                    }
+                    else
+                    {
+                        textField.textColor = [UIColor blackColor];
+                    }
                 }
                 
-                NSMutableDictionary *dic = indexPath.section == 0 ? _contact.phoneNum : _contact.email;
                 NSString *key = dic[@"index"][indexPath.row];
                 [dic setObject:valueStr forKey:key];
-                [_contact setPhoneNum:dic];
+                indexPath.section == 0 ? [_contact setPhoneNum:dic] : [_contact setEmail:dic];
             }
                 break;
                 
@@ -475,7 +538,181 @@
     _tableView.frame = rect;
 }
 
+#pragma mark UIPickeView Datasource
 
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
+{
+    return 3;
+}
+
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
+{
+    NSInteger count = 0;
+    
+    for (; count <= 0; )
+    {
+        count = _cityArr.count;
+        
+        if (component == 0)
+            break;
+        
+        NSInteger first = [pickerView selectedRowInComponent:0];
+        NSDictionary *dic1 = _cityArr[first];
+        NSArray *arr1 = dic1[@"sub"];
+        count = arr1.count;
+        
+        if (component == 1)
+            break;
+        
+        NSInteger second = [pickerView selectedRowInComponent:1];
+        NSDictionary *dic2 = arr1[second];
+        NSArray *arr2 = dic2[@"sub"];
+        count = arr2.count;
+        
+        if (component == 2)
+            break;
+    }
+    
+    return count;
+}
+
+#pragma mark UIPickerView Delegate
+
+- (UIView *)pickerView:(UIPickerView *)pickerView viewForRow:(NSInteger)row forComponent:(NSInteger)component reusingView:(UIView *)view
+{
+    NSArray *array = nil;
+    switch (component)
+    {
+        case 0:
+        {
+            array = @[[NSNumber numberWithInteger:row]];
+        }
+            break;
+            
+        case 1:
+        {
+            NSInteger first = [pickerView selectedRowInComponent:0];
+            array = @[[NSNumber numberWithInteger:first],[NSNumber numberWithInteger:row]];
+        }
+            break;
+            
+        case 2:
+        {
+            NSInteger first = [pickerView selectedRowInComponent:0];
+            NSInteger second = [pickerView selectedRowInComponent:1];
+            array = @[[NSNumber numberWithInteger:first],[NSNumber numberWithInteger:second],[NSNumber numberWithInteger:row]];
+        }
+            break;
+            
+        default:
+            break;
+    }
+    
+    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width / 3, 30)];
+    titleLabel.textAlignment = NSTextAlignmentCenter;
+    titleLabel.adjustsFontSizeToFitWidth = YES;
+    titleLabel.text = [self getNameWithArray:array andAddress:NO];
+    
+    return titleLabel;
+}
+
+- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
+{
+    switch (component)
+    {
+        case 0:
+            [pickerView reloadComponent:1];
+            [pickerView selectRow:0 inComponent:1 animated:YES];
+            
+            [pickerView reloadComponent:2];
+            [pickerView selectRow:0 inComponent:2 animated:YES];
+            break;
+            
+        case 1:
+            [pickerView reloadComponent:2];
+            [pickerView selectRow:0 inComponent:2 animated:YES];
+            break;
+            
+        case 2:
+            break;
+            
+        default:
+            break;
+    }
+}
+
+- (NSString *)getNameWithArray:(NSArray <NSNumber *>*)array andAddress:(BOOL)flag
+{
+    if (!array || array.count == 0)
+        return nil;
+    
+    NSString *nameStr = nil;
+    
+    if (flag)
+    {
+        NSInteger provinceIndex = [array[0] integerValue];
+        NSInteger cityIndex = [array[1] integerValue];
+        NSInteger regionIndex = [array[2] integerValue];
+        
+        NSDictionary *dic1 = _cityArr[provinceIndex];
+        NSString *province = dic1[@"name"];
+        
+        NSArray *arr1 = dic1[@"sub"];
+        NSDictionary *dic2 = arr1[cityIndex];
+        NSString *city = dic2[@"name"];
+        
+        NSArray *arr2 = dic2[@"sub"];
+        NSString *region = arr2[regionIndex];
+        nameStr = [NSString stringWithFormat:@"%@ | %@ | %@",province,city,region];
+    }
+    else
+    {
+        for (; YES; )
+        {
+            NSDictionary *dic1 = _cityArr[[array[0] integerValue]];
+            nameStr = dic1[@"name"];
+            if (array.count == 1)
+                break;
+            
+            NSArray *arr1 = dic1[@"sub"];
+            NSDictionary *dic2 = arr1[[array[1] integerValue]];
+            nameStr = dic2[@"name"];
+            
+            if (array.count == 2)
+                break;
+            
+            NSArray *arr2 = dic2[@"sub"];
+            nameStr = arr2[[array[2] integerValue]];
+            
+            if (array.count == 3)
+                break;
+        }
+    }
+    
+    return nameStr;
+}
+
+#pragma mark KeyboardAccessoryView
+
+- (void)onGetAddress:(UIButton *)button
+{
+    UIPickerView *picker = (UIPickerView *)_textField.inputView;
+    NSInteger province = [picker selectedRowInComponent:0];
+    NSInteger city = [picker selectedRowInComponent:1];
+    NSInteger region = [picker selectedRowInComponent:2];
+    _textField.text = [self getNameWithArray:@[[NSNumber numberWithInteger:province],[NSNumber numberWithInteger:city],[NSNumber numberWithInteger:region]] andAddress:YES];
+    [_textField resignFirstResponder];
+}
+
+- (void)onGetDate:(UIButton *)button
+{
+    UIDatePicker *picker = (UIDatePicker *)_textField.inputView;
+    
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"yyyy | MM | dd"];
+    _textField.text = [formatter stringFromDate:picker.date];
+    [_textField resignFirstResponder];
+}
 
 #pragma mark Memory Management
 

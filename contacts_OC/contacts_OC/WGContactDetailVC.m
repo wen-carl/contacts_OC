@@ -52,7 +52,7 @@
             self.title = detailView.contact.name;
             
             [[NSNotificationCenter defaultCenter] postNotificationName:@"WGContactDidFinishEditting" object:nil];
-            [self.navigationController popViewControllerAnimated:YES];
+            //[self.navigationController popViewControllerAnimated:YES];
         }
     }
 }

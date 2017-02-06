@@ -25,6 +25,7 @@
 		84C664AF1E27777A0086D724 /* WGHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C664A41E27777A0086D724 /* WGHeaderView.m */; };
 		84C664B01E27777A0086D724 /* WGTableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C664A61E27777A0086D724 /* WGTableHeaderView.m */; };
 		84C664B11E27777A0086D724 /* WGTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C664A81E27777A0086D724 /* WGTableViewCell.m */; };
+		84C6E8DD1E373034009DBDF6 /* address.plist in Resources */ = {isa = PBXBuildFile; fileRef = 84C6E8DC1E373034009DBDF6 /* address.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,8 +62,8 @@
 		843FEEFE1E2772270017E734 /* contacts_OCUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = contacts_OCUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		843FEF021E2772270017E734 /* contacts_OCUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = contacts_OCUITests.m; sourceTree = "<group>"; };
 		843FEF041E2772270017E734 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		84C664941E2777620086D724 /* contact.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = contact.png; sourceTree = "<group>"; };
-		84C664951E2777620086D724 /* contacts-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "contacts-Prefix.pch"; sourceTree = "<group>"; };
+		84C664941E2777620086D724 /* contact.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = contact.png; path = ../contact.png; sourceTree = "<group>"; };
+		84C664951E2777620086D724 /* contacts-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "contacts-Prefix.pch"; path = "../contacts-Prefix.pch"; sourceTree = "<group>"; };
 		84C664971E27777A0086D724 /* WGContact.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WGContact.h; sourceTree = "<group>"; };
 		84C664981E27777A0086D724 /* WGContact.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WGContact.m; sourceTree = "<group>"; };
 		84C664991E27777A0086D724 /* WGContactDetailVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WGContactDetailVC.h; sourceTree = "<group>"; };
@@ -81,6 +82,7 @@
 		84C664A61E27777A0086D724 /* WGTableHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WGTableHeaderView.m; sourceTree = "<group>"; };
 		84C664A71E27777A0086D724 /* WGTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WGTableViewCell.h; sourceTree = "<group>"; };
 		84C664A81E27777A0086D724 /* WGTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WGTableViewCell.m; sourceTree = "<group>"; };
+		84C6E8DC1E373034009DBDF6 /* address.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = address.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,8 +113,6 @@
 		843FEED11E2772270017E734 = {
 			isa = PBXGroup;
 			children = (
-				84C664941E2777620086D724 /* contact.png */,
-				84C664951E2777620086D724 /* contacts-Prefix.pch */,
 				843FEEDC1E2772270017E734 /* contacts_OC */,
 				843FEEF61E2772270017E734 /* contacts_OCTests */,
 				843FEF011E2772270017E734 /* contacts_OCUITests */,
@@ -144,6 +144,9 @@
 				843FEEE91E2772270017E734 /* Assets.xcassets */,
 				843FEEEB1E2772270017E734 /* LaunchScreen.storyboard */,
 				843FEEEE1E2772270017E734 /* Info.plist */,
+				84C6E8DC1E373034009DBDF6 /* address.plist */,
+				84C664941E2777620086D724 /* contact.png */,
+				84C664951E2777620086D724 /* contacts-Prefix.pch */,
 				843FEEDD1E2772270017E734 /* Supporting Files */,
 			);
 			path = contacts_OC;
@@ -321,6 +324,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				843FEEED1E2772270017E734 /* LaunchScreen.storyboard in Resources */,
+				84C6E8DD1E373034009DBDF6 /* address.plist in Resources */,
 				843FEEEA1E2772270017E734 /* Assets.xcassets in Resources */,
 				84C664961E2777620086D724 /* contact.png in Resources */,
 				843FEEE81E2772270017E734 /* Main.storyboard in Resources */,

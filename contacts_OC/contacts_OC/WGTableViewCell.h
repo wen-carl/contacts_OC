@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
+#define TAG_KINDTF        1000
+#define TAG_INFOTF        1001
+
 typedef enum : NSUInteger {
     WGTableViewCellStyleDefalt,
     WGTableViewCellStyleValue1,  // Add
@@ -24,11 +27,11 @@ typedef enum : NSUInteger {
 
 @interface WGTableViewCell : UITableViewCell
 {
-    UILabel *_kindLabel;
+    UITextField *_kindTextfield;
     UITextField *_infoTextField;
 }
 
-@property (nonatomic, strong, readonly) UILabel *kindLabel;
+@property (nonatomic, strong, readonly) UITextField *kindTextfield;
 @property (nonatomic, strong, readonly) UITextField *infoTextField;
 @property (nonatomic, assign) WGTableViewCellStyle style;
 @property (nonatomic, assign) BOOL isEditting;

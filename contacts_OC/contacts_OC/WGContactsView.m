@@ -61,7 +61,7 @@
             [contacts addObject:contact];
         }
         
-        WGContactGroup *group = [WGContactGroup contactGroupWithName:str1 andDetail:[NSString stringWithFormat:@"Name start with %@",str1]];
+        WGContactGroup *group = [WGContactGroup contactGroupWithName:str1.uppercaseString andDetail:[NSString stringWithFormat:@"Name start with %@",str1]];
         group.contacts = contacts;
         
         [allContact setObject:group forKey:group.name];
@@ -290,7 +290,7 @@
     else
     {
         _isSearching = YES;
-        _resultArray = [self searchResultWithKeyWord:searchText];
+        _resultArray = [self searchResultWithKeyWord:searchText.uppercaseString];
     }
     [_tableView reloadData];
 }

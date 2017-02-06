@@ -8,6 +8,7 @@
 
 #import "WGTableViewCell.h"
 
+
 @implementation WGTableViewCell
 
 - (void)awakeFromNib
@@ -15,23 +16,22 @@
     [super awakeFromNib];
 }
 
-- (void)setKindLabel:(UILabel *)kindLabel
+- (void)setkindTextfield:(UITextField *)kindTextfield
 {
-    _kindLabel = kindLabel;
+    _kindTextfield = kindTextfield;
 }
 
-- (UILabel *)kindLabel
+- (UITextField *)kindTextfield
 {
-    if (!_kindLabel)
+    if (!_kindTextfield)
     {
-        _kindLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 120, self.frame.size.height)];
-        _kindLabel.textAlignment = NSTextAlignmentRight;
-        _kindLabel.textColor = [UIColor darkGrayColor];
-//        _kindLabel.layer.borderColor = [UIColor redColor].CGColor;
-//        _kindLabel.layer.borderWidth = 1.0f;
+        _kindTextfield = [[UITextField alloc] initWithFrame:CGRectMake(0, 0, 120, self.frame.size.height)];
+        _kindTextfield.textAlignment = NSTextAlignmentRight;
+        _kindTextfield.textColor = [UIColor darkGrayColor];
+        _kindTextfield.tag = TAG_KINDTF;
     }
     
-    return _kindLabel;
+    return _kindTextfield;
 }
 
 - (void)setInfoTextField:(UITextField *)infoTextField
@@ -46,6 +46,7 @@
         _infoTextField = [[UITextField alloc] initWithFrame:CGRectMake(125, 0, self.frame.size.width - 100, self.frame.size.height)];
         _infoTextField.borderStyle = UITextBorderStyleRoundedRect;
         _infoTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
+        _infoTextField.tag = TAG_INFOTF;
     }
     
     return _infoTextField;
@@ -56,6 +57,10 @@
     _isEditting = isEditting;
     _infoTextField.enabled = _isEditting;
     _infoTextField.borderStyle = _isEditting ? UITextBorderStyleRoundedRect : UITextBorderStyleLine;
+    
+    _kindTextfield.enabled = _isEditting;
+    _kindTextfield.borderStyle = _isEditting ? UITextBorderStyleLine : UITextBorderStyleNone;
+    
     self.accessoryView.hidden = !_isEditting;
 }
 
@@ -66,7 +71,7 @@
     if (self)
     {
         _style = style;
-        [self.contentView addSubview:self.kindLabel];
+        [self.contentView addSubview:self.kindTextfield];
         [self.contentView addSubview:self.infoTextField];
         
         UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];

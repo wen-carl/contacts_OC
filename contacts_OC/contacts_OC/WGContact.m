@@ -70,12 +70,11 @@
     return _email;
 }
 
-- (WGContactGroup *)group
+- (NSString *)group
 {
     if (!_group)
     {
-        NSString *firstLetter = [self getFirstLetter];
-        _group = [WGContactGroup contactGroupWithName:firstLetter andDetail:[NSString stringWithFormat:@"Name start with %@",firstLetter]];
+        _group = [self getFirstLetter].uppercaseString;
     }
     return _group;
 }
@@ -150,22 +149,28 @@
     NSMutableDictionary *contactDic = [self getContactsDataFromLocal];
     if (originContact)
     {
-        WGContactGroup *oldGroup = contactDic[originContact.group.name];
+        WGContactGroup *oldGroup = contactDic[originContact.group];
         [oldGroup.contacts removeObjectAtIndex:index];
     }
 
-    WGContactGroup *group = contactDic[contact.group.name];
+    WGContactGroup *group = contactDic[contact.group];
     if (group)
     {
         [group.contacts addObject:contact];
+        [group.contacts sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+            WGContact *c1 = (WGContact *)obj1;
+            WGContact *c2 = (WGContact *)obj2;
+            
+            return [c1.name compare:c2.name options:NSCaseInsensitiveSearch];
+        }];
     }
     else
     {
-        group = [[WGContactGroup alloc] initWithName:contact.group.name andDetail:[NSString stringWithFormat:@"Name start with %@.",contact.group.name]];
+        group = [[WGContactGroup alloc] initWithName:contact.group andDetail:[NSString stringWithFormat:@"Name start with %@.",contact.group]];
         [group.contacts addObject:contact];
     }
     
-    [contactDic setObject:group forKey:contact.group.name];
+    [contactDic setObject:group forKey:contact.group];
 
     return [self saveContactsDataToLocale:contactDic];
 }

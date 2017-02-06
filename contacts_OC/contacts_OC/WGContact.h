@@ -13,7 +13,7 @@
 
 @interface WGContact : NSObject <NSCoding>
 {
-    WGContactGroup *_group;
+    NSString *_group;
 }
 
 @property (nonatomic, copy) NSString *name;
@@ -22,7 +22,7 @@
 @property (nonatomic, strong) UIImage *image;
 @property (nonatomic, strong) NSMutableDictionary *phoneNum;
 @property (nonatomic, strong) NSMutableDictionary *email;
-@property (nonatomic, strong, readonly) WGContactGroup *group;
+@property (nonatomic, strong, readonly) NSString *group;
 
 + (instancetype)contactWithName:(NSString *)name;
 - (instancetype)initWithName:(NSString *)name;
