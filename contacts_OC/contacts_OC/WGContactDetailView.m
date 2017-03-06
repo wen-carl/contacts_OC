@@ -8,7 +8,7 @@
 
 #import "WGContactDetailView.h"
 
-@interface WGContactDetailView ()<UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate, WGHeaderViewDelegate, WGTableHeaderViewDelegate, WGTableViewCellDelegate, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource>
+@interface WGContactDetailView ()<UITableViewDelegate, UITableViewDataSource, WGHeaderViewDelegate, WGTableHeaderViewDelegate, WGTableViewCellDelegate, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource>
 {
     UITableView *_tableView;
     WGHeaderView *_headerView;

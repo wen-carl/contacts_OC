@@ -29,8 +29,10 @@ typedef enum : NSUInteger {
 {
     UITextField *_kindTextfield;
     UITextField *_infoTextField;
+    UIButton *_button;
 }
 
+@property (nonatomic, strong, readonly) UIButton *button;
 @property (nonatomic, strong, readonly) UITextField *kindTextfield;
 @property (nonatomic, strong, readonly) UITextField *infoTextField;
 @property (nonatomic, assign) WGTableViewCellStyle style;

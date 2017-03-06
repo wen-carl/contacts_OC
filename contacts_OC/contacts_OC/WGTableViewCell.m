@@ -8,6 +8,9 @@
 
 #import "WGTableViewCell.h"
 
+@interface WGTableViewCell ()
+
+@end
 
 @implementation WGTableViewCell
 
@@ -64,38 +67,48 @@
     self.accessoryView.hidden = !_isEditting;
 }
 
+- (UIButton *)button
+{
+    if (_button == nil)
+    {
+        _button = [UIButton buttonWithType:UIButtonTypeSystem];
+        _button.frame = CGRectMake(0, 0, 30, 30);
+        _button.layer.masksToBounds = YES;
+        _button.layer.cornerRadius = 15;
+        [_button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        self.accessoryView = _button;
+    }
+    
+    return _button;
+}
+
 - (instancetype)initWithStyle:(WGTableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier];
-    
     if (self)
     {
         _style = style;
         [self.contentView addSubview:self.kindTextfield];
         [self.contentView addSubview:self.infoTextField];
         
-        UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
-        button.frame = CGRectMake(0, 0, 30, 30);
-        button.layer.masksToBounds = YES;
-        button.layer.cornerRadius = 15;
-        
-        switch (style)
+        if (style != WGTableViewCellStyleDefalt)
         {
-            case WGTableViewCellStyleValue1:
-                button.backgroundColor = [UIColor greenColor];
-                [button addTarget:self action:@selector(onAdd:) forControlEvents:UIControlEventTouchUpInside];
-                self.accessoryView = button;
-                break;
-                
-            case WGTableViewCellStyleValue2:
-                button.backgroundColor = [UIColor redColor];
-                [button addTarget:self action:@selector(onDelete:) forControlEvents:UIControlEventTouchUpInside];
-                self.accessoryView = button;
-                break;
-                
-            case WGTableViewCellStyleDefalt:
-            default:
-                break;
+            switch (style)
+            {
+                case WGTableViewCellStyleValue1:
+                    _button.backgroundColor = [UIColor greenColor];
+                    [_button setTitle:@"+" forState:UIControlStateNormal];
+                    [_button addTarget:self action:@selector(onAdd:) forControlEvents:UIControlEventTouchUpInside];
+                    break;
+                    
+                case WGTableViewCellStyleValue2:
+                    _button.backgroundColor = [UIColor redColor];
+                    [_button setTitle:@"-" forState:UIControlStateNormal];
+                    [_button addTarget:self action:@selector(onDelete:) forControlEvents:UIControlEventTouchUpInside];
+                    break;
+                default:
+                    break;
+            }
         }
     }
     
